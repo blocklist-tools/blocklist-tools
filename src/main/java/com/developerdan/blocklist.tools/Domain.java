@@ -3,7 +3,6 @@ package com.developerdan.blocklist.tools;
 import java.net.IDN;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 public final class Domain {
 
@@ -25,8 +24,13 @@ public final class Domain {
         return !domain.isEmpty();
     }
 
+    @Override
+    public String toString() {
+        return domain;
+    }
+
     private static String normalize(final String domain) {
-        if (domain == null || domain.length() > 255) {
+        if (domain == null || domain.length() > 255 || domain.endsWith(".")) {
             return "";
         }
         String normalized;

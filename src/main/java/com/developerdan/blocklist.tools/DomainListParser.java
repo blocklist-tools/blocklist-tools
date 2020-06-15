@@ -3,7 +3,7 @@ package com.developerdan.blocklist.tools;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class DomainListParser extends DomainParser {
+public final class DomainListParser extends DomainParser {
 
     private static final Pattern STRIP_HOSTS_COMMENTS = Pattern.compile("^([^#]+)", Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 abstract class DomainParser {
     abstract public Optional<Domain> parseLine(String line);
 
-    public Stream<Domain> BlocklistReader(String fileName) throws IOException {
+    public final Stream<Domain> BlocklistReader(String fileName) throws IOException {
         try (Stream<String> stream = Files.lines(Paths.get(fileName), StandardCharsets.UTF_8)) {
             return stream.parallel()
                     .map(this::parseLine)
