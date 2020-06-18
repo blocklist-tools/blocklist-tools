@@ -135,4 +135,52 @@ public class DomainTest {
         var domain = Domain.fromString(longDomain);
         assertThat(domain).isEmpty();
     }
+
+    @Test
+    public void canCompareEqualDomains() {
+        var one = Domain.fromString("equals.example.com");
+        var two = Domain.fromString("equals.example.com");
+        assertThat(one.get()).isEqualTo(two.get());
+        assertThat(one.get()).isEqualByComparingTo(two.get());
+    }
+
+    @Test
+    public void canEqualSelf() {
+        var one = Domain.fromString("equals.example.com");
+        assertThat(one.get()).isEqualTo(one.get());
+        assertThat(one.get()).isEqualByComparingTo(one.get());
+    }
+
+    @Test
+    public void canCompareNull() {
+        var one = Domain.fromString("example.com");
+        assertThat(one.get()).isNotEqualTo(null);
+        assertThat(one.get()).isNotEqualByComparingTo(null);
+    }
+
+    @Test
+    public void canCompareDifferentDomains() {
+        var one = Domain.fromString("one.example.com");
+        var two = Domain.fromString("two.example.com");
+        assertThat(one.get()).isNotEqualTo(two.get());
+        assertThat(one.get()).isNotEqualByComparingTo(two.get());
+        assertThat(one.get()).isLessThan(two.get());
+        assertThat(two.get()).isGreaterThan(one.get());
+    }
+
+    @Test
+    public void canCompareByDomainSections() {
+        var one = Domain.fromString("same.example.com");
+        var two = Domain.fromString("same.example.edu");
+        assertThat(one.get()).isLessThan(two.get());
+        assertThat(two.get()).isGreaterThan(one.get());
+    }
+
+    @Test
+    public void canCompareByDomainSectionsWithDifferentLengths() {
+        var one = Domain.fromString("same.example.com");
+        var two = Domain.fromString("another.same.example.com");
+        assertThat(one.get()).isLessThan(two.get());
+        assertThat(two.get()).isGreaterThan(one.get());
+    }
 }

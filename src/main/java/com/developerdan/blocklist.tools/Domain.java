@@ -4,14 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.IDN;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
-public final class Domain {
+public final class Domain implements Comparable<Domain> {
 
     private final String domain;
-    private static Logger LOGGER = LoggerFactory.getLogger(Domain.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Domain.class);
 
     private Domain(String domain) {
         this.domain = normalize(domain);
@@ -49,16 +51,54 @@ public final class Domain {
         }
     }
 
+    private ArrayList<String> domainParts()
+    {
+        var domainParts = Arrays.asList(domain.split("\\.", -1));
+        Collections.reverse(domainParts);
+        return new ArrayList<>(domainParts);
+    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Domain domain1 = (Domain) o;
-        return domain.equals(domain1.domain);
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        Domain otherDomain = (Domain) other;
+        return domain.equals(otherDomain.domain);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(domain);
+        return domain.hashCode();
+    }
+
+    @Override
+    public int compareTo(Domain other) {
+        if (other == null) {
+            return 1;
+        }
+        if (this.equals(other)) {
+            return 0;
+        }
+
+        var domainParts = domainParts();
+        var otherDomainParts = other.domainParts();
+        var index = 0;
+        for (String part: domainParts) {
+            if (otherDomainParts.size() <= index) {
+                return 1;
+            }
+            var comparison = part.compareTo(otherDomainParts.get(index));
+            if (comparison != 0) {
+                return comparison;
+            }
+            index++;
+        }
+        // we know that the domains are not equal, and we've already looped
+        // through all our sections, so 'other' must be longer
+        return -1;
     }
 }

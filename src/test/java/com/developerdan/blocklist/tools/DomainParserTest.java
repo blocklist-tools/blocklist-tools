@@ -1,9 +1,13 @@
 package com.developerdan.blocklist.tools;
 
 import org.junit.jupiter.api.Test;
+
+import java.io.UncheckedIOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class DomainParserTest {
     @Test
@@ -56,5 +60,35 @@ public class DomainParserTest {
         assertThat(domains).doesNotContain(".leading-dot.example.com");
         assertThat(domains).doesNotContain("with-ip.example.com");
         assertThat(domains).contains("no-space-comment.example.com");
+    }
+
+    @Test
+    public void willThrowOnMissingFile()
+    {
+        assertThatExceptionOfType(UncheckedIOException.class)
+            .isThrownBy(() -> new DomainListParser().parseFile("/not-a-real-file.txt"));
+    }
+
+    @Test
+    public void willSortUnsortedLists()
+    {
+        String[] unsorted = {
+            "c.example.com",
+            "a.example.com",
+            "b.example.com",
+            "a.example.com",
+            "a.example.edu"
+        };
+        var sortedDomains = new DomainListParser().parseStream(Arrays.stream(unsorted));
+        var sortedStrings = sortedDomains
+                                .stream()
+                                .map(Domain::toString)
+                                .collect(Collectors.toList());
+        assertThat(sortedStrings).containsExactly(
+            "a.example.com",
+            "b.example.com",
+            "c.example.com",
+            "a.example.edu"
+        );
     }
 }
