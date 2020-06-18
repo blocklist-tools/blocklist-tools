@@ -1,0 +1,40 @@
+##########################################################################################
+# Title: Lightswitch05's ads-and-tracking-extended.txt
+# Released: 2020-06-17T18:46:00+00:00
+# Count: 126186 domains
+# Homepage: https://www.github.developerdan.com/hosts/
+# Issues: https://github.com/lightswitch05/hosts/issues
+# Source: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
+# Expires: 2 days
+#
+# Copyright 2020 Daniel White
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##########################################################################################
+
+example.com
+     multiple-spaces.example.com
+# below this is a duplicate
+example.com
+	tabs-leading.example.com
+tabs-trailing.example.com	# tab comment
+xn--mxail5aa.com  # αρριϵ.com
+1.αρριϵ.com
+trailing-whitespace.example.com     
+trailing-tab.example.com		
+UP-CASE.EXAMPLE.COM
+127.0.0.1 different-ip.example.com
+-leading-dash.example.com
+.leading-dot.example.com
+0.0.0.0 with-ip.example.com
+no-space-comment.example.com#nospace comment
