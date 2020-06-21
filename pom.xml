@@ -19,6 +19,28 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 
+    <repositories>
+        <!--<repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>-->
+        <repository>
+            <id>github</id>
+            <name>GitHub blocklist-tools Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/blocklist-tools/blocklist-tools</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/blocklist-tools/blocklist-tools</url>
+        </repository>
+    </distributionManagement>
+
 	<dependencyManagement></dependencyManagement>
 
 	<dependencies>

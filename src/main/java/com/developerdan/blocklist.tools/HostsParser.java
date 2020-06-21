@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public final class HostsParser extends DomainParser {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(Domain.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Domain.class);
     private static final Pattern STRIP_HOSTS_COMMENTS = Pattern.compile("^\\d+\\.\\d+\\.\\d+\\.\\d+\\s+([^#\\s]+)", Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
     @Override
