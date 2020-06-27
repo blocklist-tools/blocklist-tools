@@ -90,4 +90,15 @@ public class DomainParserTest {
             "a.example.edu"
         );
     }
+
+    @Test
+    public void canDownloadAndParseList()
+    {
+        var url = "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt";
+        var domains = new HostsParser().parseUrl(url)
+                            .stream()
+                            .map(Domain::toString)
+                            .collect(Collectors.toSet());
+        assertThat(domains).contains("block-test.developerdan.com");
+    }
 }

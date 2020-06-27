@@ -34,6 +34,13 @@ public class DomainTest {
     }
 
     @Test
+    public void canParseDomainWithUnderscore() {
+        var domain = Domain.fromString("whatcounts_saas.s3.amazonaws.com");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("whatcounts_saas.s3.amazonaws.com");
+    }
+
+    @Test
     public void cannotParseEmptyString() {
         var domain = Domain.fromString("");
         assertThat(domain).isEmpty();
@@ -108,6 +115,126 @@ public class DomainTest {
     @Test
     public void cannotParseTrailingDot() {
         var domain = Domain.fromString("example.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseExclamation() {
+        var domain = Domain.fromString("exam!ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseQuestionMark() {
+        var domain = Domain.fromString("exam?ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseOpenAngle() {
+        var domain = Domain.fromString("exam<ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseCloseAngle() {
+        var domain = Domain.fromString("exam>ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseColon() {
+        var domain = Domain.fromString("exam:ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseSimiColon() {
+        var domain = Domain.fromString("exam;ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseOpenBracket() {
+        var domain = Domain.fromString("exam[ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseCloseBracket() {
+        var domain = Domain.fromString("exam]ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParsePlus() {
+        var domain = Domain.fromString("exam+ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseEquals() {
+        var domain = Domain.fromString("exam=ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseAmpersand() {
+        var domain = Domain.fromString("exa&ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseCarrot() {
+        var domain = Domain.fromString("exa^ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseDollar() {
+        var domain = Domain.fromString("exa$ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseAt() {
+        var domain = Domain.fromString("exa@ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseTildi() {
+        var domain = Domain.fromString("exa~ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseOpenCurly() {
+        var domain = Domain.fromString("exa{ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseCloseCurly() {
+        var domain = Domain.fromString("exa}ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParsePipe() {
+        var domain = Domain.fromString("exa|ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseForwardSlash() {
+        var domain = Domain.fromString("exa/ple.com.");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseBackSlash() {
+        var domain = Domain.fromString("exa\\ple.com.");
         assertThat(domain).isEmpty();
     }
 

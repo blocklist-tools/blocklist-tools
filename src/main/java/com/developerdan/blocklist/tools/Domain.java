@@ -37,13 +37,18 @@ public final class Domain implements Comparable<Domain> {
     }
 
     private static String normalize(final String domain) {
-        if (domain == null || domain.length() > 255 || domain.endsWith(".")) {
+        if (domain == null
+            || domain.length() > 255
+            || domain.startsWith("-")
+            || domain.endsWith(".")
+            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#].*")
+        ) {
             LOGGER.debug("Domain <{}> is not valid", domain);
             return "";
         }
         try {
             var normalized = IDN.toASCII(domain);
-            normalized = IDN.toASCII(normalized, IDN.USE_STD3_ASCII_RULES);
+            normalized = IDN.toASCII(normalized);
             return normalized.toLowerCase(Locale.ENGLISH);
         } catch (IllegalArgumentException ex) {
             LOGGER.debug("Domain <{}> is not valid: {}", domain, ex.getMessage());
