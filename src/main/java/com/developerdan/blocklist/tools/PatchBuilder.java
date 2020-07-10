@@ -11,24 +11,24 @@ final class PatchBuilder {
     private static final String REMOVED = "-";
     private static final String ADDED = "+";
 
-    private List<String> patches = new ArrayList<>();
+    private final List<String> patches = new ArrayList<>();
     private StringBuilder patch = new StringBuilder();
     private Deque<String> leadingLinesBuffer = new ArrayDeque<>();
     private int linesSinceChange = SURROUNDING_LINES + 1;
 
-    public void removed(final Domain domain) {
+    public void removed(final Domain entry) {
         linesSinceChange = 0;
-        addDomain(REMOVED, domain);
+        addDomain(REMOVED, entry);
     }
 
-    public void added(final Domain domain) {
+    public void added(final Domain entry) {
         linesSinceChange = 0;
-        addDomain(ADDED, domain);
+        addDomain(ADDED, entry);
     }
 
-    public void noChange(final Domain domain) {
+    public void noChange(final Domain entry) {
         linesSinceChange++;
-        addDomain(NO_CHANGE, domain);
+        addDomain(NO_CHANGE, entry);
     }
 
     public List<String> patches() {
@@ -42,8 +42,8 @@ final class PatchBuilder {
         return String.join("---\n", patches());
     }
 
-    private void addDomain(final String changeSymbol, final Domain domain) {
-        var line = changeSymbol + domain + "\n";
+    private void addDomain(final String changeSymbol, final Domain entry) {
+        var line = changeSymbol + entry + "\n";
         if (isChange(changeSymbol)) {
             patch.append(drainLineBuffer());
         }
@@ -59,7 +59,7 @@ final class PatchBuilder {
         if (leadingLinesBuffer.size() == SURROUNDING_LINES) {
             leadingLinesBuffer.pop();
         }
-        leadingLinesBuffer.add(changeSymbol + domain + "\n");
+        leadingLinesBuffer.add(changeSymbol + entry + "\n");
     }
 
     private String drainLineBuffer() {

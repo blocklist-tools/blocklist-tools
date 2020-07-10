@@ -137,6 +137,12 @@ public class DomainTest {
     }
 
     @Test
+    public void cannotParseHtml() {
+        var domain = Domain.fromString("<html><head>");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
     public void cannotParseCloseAngle() {
         var domain = Domain.fromString("exam>ple.com.");
         assertThat(domain).isEmpty();
@@ -267,6 +273,8 @@ public class DomainTest {
     public void canCompareEqualDomains() {
         var one = Domain.fromString("equals.example.com");
         var two = Domain.fromString("equals.example.com");
+        assertThat(one).isNotEmpty();
+        assertThat(two).isNotEmpty();
         assertThat(one.get()).isEqualTo(two.get());
         assertThat(one.get()).isEqualByComparingTo(two.get());
     }
@@ -274,6 +282,7 @@ public class DomainTest {
     @Test
     public void canEqualSelf() {
         var one = Domain.fromString("equals.example.com");
+        assertThat(one).isNotEmpty();
         assertThat(one.get()).isEqualTo(one.get());
         assertThat(one.get()).isEqualByComparingTo(one.get());
     }
@@ -281,6 +290,7 @@ public class DomainTest {
     @Test
     public void canCompareNull() {
         var one = Domain.fromString("example.com");
+        assertThat(one).isNotEmpty();
         assertThat(one.get()).isNotEqualTo(null);
         assertThat(one.get()).isNotEqualByComparingTo(null);
     }
@@ -289,6 +299,8 @@ public class DomainTest {
     public void canCompareDifferentDomains() {
         var one = Domain.fromString("one.example.com");
         var two = Domain.fromString("two.example.com");
+        assertThat(one).isNotEmpty();
+        assertThat(two).isNotEmpty();
         assertThat(one.get()).isNotEqualTo(two.get());
         assertThat(one.get()).isNotEqualByComparingTo(two.get());
         assertThat(one.get()).isLessThan(two.get());
@@ -299,6 +311,8 @@ public class DomainTest {
     public void canCompareByDomainSections() {
         var one = Domain.fromString("same.example.com");
         var two = Domain.fromString("same.example.edu");
+        assertThat(one).isNotEmpty();
+        assertThat(two).isNotEmpty();
         assertThat(one.get()).isLessThan(two.get());
         assertThat(two.get()).isGreaterThan(one.get());
     }
@@ -307,7 +321,64 @@ public class DomainTest {
     public void canCompareByDomainSectionsWithDifferentLengths() {
         var one = Domain.fromString("same.example.com");
         var two = Domain.fromString("another.same.example.com");
+        assertThat(one).isNotEmpty();
+        assertThat(two).isNotEmpty();
         assertThat(one.get()).isLessThan(two.get());
         assertThat(two.get()).isGreaterThan(one.get());
+    }
+
+    @Test
+    public void canGetDomainFromFromHttpUrl() {
+        var domain = Domain.fromUrl("http://example.com");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("example.com");
+    }
+
+    @Test
+    public void canGetDomainFromFromHttpsUrl() {
+        var domain = Domain.fromUrl("https://example.com");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("example.com");
+    }
+
+    @Test
+    public void canGetDomainFromFromWwwUrl() {
+        var domain = Domain.fromUrl("https://www.example.com");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("www.example.com");
+    }
+
+    @Test
+    public void canGetDomainFromFromFtp() {
+        var domain = Domain.fromUrl("ftp://example.com");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("example.com");
+    }
+
+    @Test
+    public void canGetDomainFromFromLocal() {
+        var domain = Domain.fromUrl("http://localhost/test");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("localhost");
+    }
+
+    @Test
+    public void canGetDomainFromFromLocalWithPort() {
+        var domain = Domain.fromUrl("http://localhost:8080/test");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("localhost");
+    }
+
+    @Test
+    public void cannotGetDomainFromDomain() {
+        var domain = Domain.fromUrl("example.com");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void canGetWithUrlParams() {
+        var domain = Domain.fromUrl("http://example.co.uk?foo=bar&test=true");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("example.co.uk");
     }
 }

@@ -4,10 +4,6 @@ import com.developerdan.blocklist.tools.exceptions.DownloadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
@@ -24,12 +20,12 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-abstract class DomainParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Domain.class);
+abstract class BlocklistParser<E> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlocklistParser.class);
 
-    abstract public Optional<Domain> parseLine(String line);
+    abstract public Optional<E> parseLine(String line);
 
-    public final NavigableSet<Domain> parseUrl(String url) {
+    public final NavigableSet<E> parseUrl(String url) {
         try {
             LOGGER.info("Downloading blocklist from {}", url);
             var response = httpClient().send(httpRequest(url), HttpResponse.BodyHandlers.ofLines());
@@ -40,7 +36,7 @@ abstract class DomainParser {
         }
     }
 
-    public final NavigableSet<Domain> parseFile(String fileName) {
+    public final NavigableSet<E> parseFile(String fileName) {
         try (Stream<String> stream = Files.lines(Paths.get(fileName), StandardCharsets.UTF_8)) {
             return parseStream(stream.parallel());
         } catch (IOException ex) {
@@ -49,7 +45,7 @@ abstract class DomainParser {
         }
     }
 
-    public final NavigableSet<Domain> parseStream(Stream<String> stream) {
+    public final NavigableSet<E> parseStream(Stream<String> stream) {
         return stream
                 .map(this::parseLine)
                 .filter(Optional::isPresent)
@@ -67,7 +63,8 @@ abstract class DomainParser {
     private HttpRequest httpRequest(String url) {
         return HttpRequest
             .newBuilder()
-            .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0")
+            .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0) Gecko/20100101 Firefox/78.0")
+            .header("Accept", "text/html")
             .uri(URI.create(url))
             .GET()
             .build();

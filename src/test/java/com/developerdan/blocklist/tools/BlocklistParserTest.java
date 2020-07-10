@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class DomainParserTest {
+public class BlocklistParserTest {
     @Test
     public void canParseHostsFile()
     {
@@ -91,7 +91,7 @@ public class DomainParserTest {
         );
     }
 
-    @Test
+    //@Test
     public void canDownloadAndParseList()
     {
         var url = "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt";

@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.IDN;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +19,16 @@ public final class Domain implements Comparable<Domain> {
 
     private Domain(String domain) {
         this.domain = normalize(domain);
+    }
+
+    public static Optional<Domain> fromUrl(final String url) {
+        try {
+            var uri = new URI(url);
+            return Domain.fromString(uri.getHost());
+        } catch (URISyntaxException ex) {
+            // not a URL, maybe is just a host
+            return Domain.fromString(url);
+        }
     }
 
     public static Optional<Domain> fromString(final String domainInput) {
@@ -41,7 +53,7 @@ public final class Domain implements Comparable<Domain> {
             || domain.length() > 255
             || domain.startsWith("-")
             || domain.endsWith(".")
-            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#].*")
+            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#<>].*")
         ) {
             LOGGER.debug("Domain <{}> is not valid", domain);
             return "";

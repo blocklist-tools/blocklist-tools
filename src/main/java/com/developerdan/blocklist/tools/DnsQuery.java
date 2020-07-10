@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class Dns {
+public class DnsQuery {
 
     private static Resolver resolver;
 
@@ -44,13 +44,13 @@ public class Dns {
         resolver = new ExtendedResolver(newResolvers);
     }
 
-    public static String dig(final Domain name, final String queryTpe) throws IOException {
+    public static DnsResponse dig(final Domain name, final String queryTpe) throws IOException {
         var domainName = name.toString() + ".";
         try {
             Record question = Record.newRecord(Name.fromString(domainName), Type.value(queryTpe), DClass.IN);
             Message query = Message.newQuery(question);
             var response = getResolver().send(query);
-            return response.toString();
+            return DnsResponse.fromMessage(response);
         } catch (TextParseException ex) {
             throw new IllegalArgumentException("Invalid domain name: " + name, ex);
         }
