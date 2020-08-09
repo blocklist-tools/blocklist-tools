@@ -14,7 +14,7 @@ public class BlocklistParserTest {
     {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         var filePath = classloader.getResource("hosts-blocklist.txt").getPath();
-        var domains = new HostsParser().parseFile(filePath)
+        var domains = new HostsParser().parseFile(filePath).getRecords()
             .stream()
             .map(Domain::toString)
             .collect(Collectors.toSet());
@@ -40,7 +40,7 @@ public class BlocklistParserTest {
     {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         var filePath = classloader.getResource("domain-blocklist.txt").getPath();
-        var domains = new DomainListParser().parseFile(filePath)
+        var domains = new DomainListParser().parseFile(filePath).getRecords()
             .stream()
             .map(Domain::toString)
             .collect(Collectors.toSet());
@@ -79,7 +79,7 @@ public class BlocklistParserTest {
             "a.example.edu"
         };
         var sortedDomains = new DomainListParser().parseStream(Arrays.stream(unsorted));
-        var sortedStrings = sortedDomains
+        var sortedStrings = sortedDomains.getRecords()
                                 .stream()
                                 .map(Domain::toString)
                                 .collect(Collectors.toList());
@@ -95,7 +95,7 @@ public class BlocklistParserTest {
     public void canDownloadAndParseList()
     {
         var url = "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt";
-        var domains = new HostsParser().parseUrl(url)
+        var domains = new HostsParser().parseUrl(url).getRecords()
                             .stream()
                             .map(Domain::toString)
                             .collect(Collectors.toSet());

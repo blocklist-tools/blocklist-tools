@@ -14,6 +14,7 @@ public class DnsQueryTest {
     static String NX_DOMAIN = "this-is-not-a-real-domain-12452345.example.com";
 
     @BeforeEach
+    @SuppressWarnings("UnusedMethod")
     private void setDefaultResolver() {
         DnsQuery.resolvers(new String[]{});
     }

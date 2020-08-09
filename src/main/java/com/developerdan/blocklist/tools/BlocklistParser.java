@@ -1,5 +1,6 @@
 package com.developerdan.blocklist.tools;
 
+import com.developerdan.blocklist.tools.exceptions.BlocklistToolsRuntimeException;
 import com.developerdan.blocklist.tools.exceptions.DownloadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,19 +14,22 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.NavigableSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-abstract class BlocklistParser<E> {
+public abstract class BlocklistParser<E> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BlocklistParser.class);
 
     abstract public Optional<E> parseLine(String line);
 
-    public final NavigableSet<E> parseUrl(String url) {
+    public final ParsedList<E> parseUrl(String url) {
         try {
             LOGGER.info("Downloading blocklist from {}", url);
             var response = httpClient().send(httpRequest(url), HttpResponse.BodyHandlers.ofLines());
@@ -36,21 +40,41 @@ abstract class BlocklistParser<E> {
         }
     }
 
-    public final NavigableSet<E> parseFile(String fileName) {
+    public final ParsedList<E> parseFile(String fileName) {
         try (Stream<String> stream = Files.lines(Paths.get(fileName), StandardCharsets.UTF_8)) {
-            return parseStream(stream.parallel());
+            return parseStream(stream);
         } catch (IOException ex) {
             LOGGER.error("Unable to read file {}", fileName);
             throw new UncheckedIOException(ex);
         }
     }
 
-    public final NavigableSet<E> parseStream(Stream<String> stream) {
-        return stream
+    protected final ParsedList<E> parseStream(Stream<String> stream) {
+        var streamDigest = messageDigest();
+        var parsedDigest = messageDigest();
+        var items = stream
+                .peek((line) -> streamDigest.update(line.getBytes(StandardCharsets.UTF_8)))
                 .map(this::parseLine)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .peek((parsed) -> parsedDigest.update(parsed.toString().getBytes(StandardCharsets.UTF_8)))
                 .collect(Collectors.toCollection(TreeSet::new));
+        return new ParsedList<E>(items, byteArrayToHex(parsedDigest.digest()), byteArrayToHex(streamDigest.digest()));
+    }
+
+    private static MessageDigest messageDigest() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException ex) {
+            throw new BlocklistToolsRuntimeException(ex);
+        }
+    }
+
+    private static String byteArrayToHex(byte[] a) {
+        StringBuilder sb = new StringBuilder(a.length * 2);
+        for(byte b: a)
+            sb.append(String.format("%02x", b));
+        return sb.toString();
     }
 
     private HttpClient httpClient() {

@@ -13,5 +13,8 @@ insert_final_newline = true
 max_line_length = off
 trim_trailing_whitespace = false
 
+[*.yml]
+indent_size = 2
+
 [*-blocklist.txt]
 trim_trailing_whitespace = false
