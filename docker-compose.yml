@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  mvn:
+    image: 'maven:3.6-openjdk-14'
+    volumes:
+      - "${PWD}/:/opt/blocklist-tools"
+      - "${HOME}/.m2:/root/.m2"
+      - "${HOME}/settings.xml:/usr/share/maven/ref/settings.xml"
+    entrypoint: /opt/blocklist-tools/docker/docker-entrypoint.sh
+    working_dir: /opt/blocklist-tools
+    secrets:
+      - gpg-key.asc
+    environment:
+      SONAYPE_USERNAME: "${SONAYPE_USERNAME}"
+      SONAYPE_PASSWORD: "${SONAYPE_PASSWORD}"
+      GPG_PASSPHRASE: "${GPG_PASSPHRASE}"
+
+secrets:
+  gpg-key.asc:
+    file: ./secrets/gpg-key.asc

@@ -1,0 +1,18 @@
+<settings>
+    <servers>
+        <server>
+            <id>ossrh</id>
+            <username>${env.SONAYPE_USERNAME}</username>
+            <password>${env.SONAYPE_PASSWORD}</password>
+        </server>
+    </servers>
+
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+</settings>
