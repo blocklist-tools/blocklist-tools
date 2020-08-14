@@ -2,3 +2,5 @@ target
 .env
 secrets
 *.iml
+pom.xml.*
+release.properties

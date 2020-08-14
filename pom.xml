@@ -3,9 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.developerdan</groupId>
     <artifactId>blocklist-tools</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Blocklist Tools</name>
     <description>Blocklist Tools</description>
+    <url>https://github.com/blocklist-tools/blocklist-tools</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <java.version>14</java.version>
@@ -19,6 +28,17 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
+
+    <developers>
+        <developer>
+            <name>Daniel</name>
+            <email>daniel@developerdan.com</email>
+            <timezone>America/New_York</timezone>
+            <roles>
+                <role>architect</role>
+            </roles>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <snapshotRepository>
