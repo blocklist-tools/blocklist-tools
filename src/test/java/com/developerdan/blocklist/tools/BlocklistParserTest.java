@@ -33,6 +33,8 @@ public class BlocklistParserTest {
         assertThat(domains).doesNotContain(".leading-dot.example.com");
         assertThat(domains).doesNotContain("no-ip.example.com");
         assertThat(domains).contains("no-space-comment.example.com");
+        assertThat(domains).contains("short-ip-v6.example.com");
+        assertThat(domains).contains("colon-ip-v6.example.com");
     }
 
     @Test

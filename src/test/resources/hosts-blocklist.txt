@@ -38,3 +38,5 @@
 0.0.0.0 .leading-dot.example.com
 no-ip.example.com
 0.0.0.0 no-space-comment.example.com#nospace comment
+0 short-ip-v6.example.com # see https://raw.githubusercontent.com/TakoYachty/Gift-Card-Killer/master/Untrusted%20Hosts%20Blocker.txt
+:: colon-ip-v6.example.com # see https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianExperimentalList%20alternate%20versions/NordicFiltersHostsIPv6.txt

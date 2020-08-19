@@ -3,13 +3,14 @@ package com.developerdan.blocklist.tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 public final class HostsParser extends BlocklistParser<Domain> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Domain.class);
-    private static final Pattern STRIP_HOSTS_COMMENTS = Pattern.compile("^\\d+\\.\\d+\\.\\d+\\.\\d+\\s+([^#\\s]+)", Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+    private static final Pattern STRIP_HOSTS_COMMENTS = Pattern.compile("^[\\d\\.:]+\\s+([^#\\s]+)", Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
     @Override
     public final Optional<Domain> parseLine(String line) {
