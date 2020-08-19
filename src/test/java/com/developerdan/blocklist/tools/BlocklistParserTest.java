@@ -93,7 +93,7 @@ public class BlocklistParserTest {
         );
     }
 
-    //@Test
+    @Test
     public void canDownloadAndParseList()
     {
         var url = "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt";
