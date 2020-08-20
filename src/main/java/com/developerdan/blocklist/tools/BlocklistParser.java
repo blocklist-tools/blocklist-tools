@@ -87,6 +87,7 @@ public abstract class BlocklistParser<E> {
     private HttpRequest httpRequest(String url) {
         return HttpRequest
             .newBuilder()
+            .version(HttpClient.Version.HTTP_2)
             .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0) Gecko/20100101 Firefox/78.0")
             .header("Accept", "text/html,text/plain")
             .uri(URI.create(url))
