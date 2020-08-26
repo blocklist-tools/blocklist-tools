@@ -88,8 +88,10 @@ public abstract class BlocklistParser<E> {
         return HttpRequest
             .newBuilder()
             .version(HttpClient.Version.HTTP_2)
-            .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0) Gecko/20100101 Firefox/78.0")
+            .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:80.0) Gecko/20100101 Firefox/80.0")
             .header("Accept", "text/html,text/plain")
+            .header("DNT", "1")
+            .header("Accept-Language", "en,en-US;q=0.5")
             .uri(URI.create(url))
             .GET()
             .build();

@@ -55,7 +55,7 @@ public final class Domain implements Comparable<Domain> {
             || domain.endsWith(".")
             || domain.matches(".*[~!%\\*\\(\\)\"\\s'#<>].*")
         ) {
-            LOGGER.debug("Domain <{}> is not valid", domain);
+            LOGGER.info("Domain <{}> is not valid", domain);
             return "";
         }
         try {
@@ -63,7 +63,7 @@ public final class Domain implements Comparable<Domain> {
             normalized = IDN.toASCII(normalized);
             return normalized.toLowerCase(Locale.ENGLISH);
         } catch (IllegalArgumentException ex) {
-            LOGGER.debug("Domain <{}> is not valid: {}", domain, ex.getMessage());
+            LOGGER.info("Domain <{}> is not valid: {}", domain, ex.getMessage());
             return "";
         }
     }
