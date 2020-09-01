@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   mvn:
-    image: 'maven:3.6-openjdk-14'
+    image: maven:3.6-adoptopenjdk-14
     volumes:
       - "${PWD}/:/opt/blocklist-tools"
       - "${HOME}/.m2:/root/.m2"
