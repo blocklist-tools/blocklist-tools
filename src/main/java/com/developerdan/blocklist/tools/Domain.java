@@ -52,8 +52,11 @@ public final class Domain implements Comparable<Domain> {
         if (domain == null
             || domain.length() > 255
             || domain.startsWith("-")
+            || domain.endsWith("-")
             || domain.endsWith(".")
             || domain.matches(".*[~!%\\*\\(\\)\"\\s'#<>].*")
+            || domain.matches(".*\\.\\d+$")
+            || domain.matches(".*[\\s]+.*")
         ) {
             LOGGER.info("Domain <{}> is not valid", domain);
             return "";

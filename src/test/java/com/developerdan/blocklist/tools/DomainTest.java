@@ -251,6 +251,79 @@ public class DomainTest {
     }
 
     @Test
+    public void cannotParseLeadingPeriod() {
+        var domain = Domain.fromString(".example.com");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseTrailingDash() {
+        var domain = Domain.fromString("example.com-");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseIpAddress() {
+        var domain = Domain.fromString("8.8.8.8");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseNumericOnlyTLD() {
+        var domain = Domain.fromString("example.com.123");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void canParsePartialNumericTLD() {
+        var domain = Domain.fromString("example.com.my123");
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString("example.com.my123");
+    }
+
+    @Test
+    public void cannotParseMiddleSpace() {
+        var domain = Domain.fromString("exa mple.com");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseLeadingSpace() {
+        var domain = Domain.fromString(" example.com");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseTrailingSpace() {
+        var domain = Domain.fromString("example.com ");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseMiddleTab() {
+        var domain = Domain.fromString("exa\\tmple.com ");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseLeadingTab() {
+        var domain = Domain.fromString("\texample.com ");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseTrailingTab() {
+        var domain = Domain.fromString("example.com\t");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
+    public void cannotParseNewLine() {
+        var domain = Domain.fromString("examp\nle.com");
+        assertThat(domain).isEmpty();
+    }
+
+    @Test
     public void canParseMiddleDash() {
         var domain = Domain.fromString("my-example.com");
         assertThat(domain).isNotEmpty();
