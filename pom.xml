@@ -18,10 +18,10 @@
 
     <properties>
         <java.version>14</java.version>
-        <dnsjava.version>3.1.0</dnsjava.version>
+        <dnsjava.version>3.3.1</dnsjava.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <junit.version>5.4.0</junit.version>
-        <assertj.version>3.16.1</assertj.version>
+        <junit.version>5.7.0</junit.version>
+        <assertj.version>3.18.0</assertj.version>
         <errorprone.version>2.4.0</errorprone.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -55,8 +55,8 @@
         <connection>scm:git:git@github.com:blocklist-tools/blocklist-tools.git</connection>
         <developerConnection>scm:git:git@github.com:blocklist-tools/blocklist-tools.git</developerConnection>
         <url>https://github.com/blocklist-tools/blocklist-tools</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
