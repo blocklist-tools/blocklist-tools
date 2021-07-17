@@ -17,8 +17,6 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.util.NavigableSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -27,7 +25,7 @@ import java.util.stream.Stream;
 public abstract class BlocklistParser<E> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BlocklistParser.class);
 
-    abstract public Optional<E> parseLine(String line);
+    public abstract Optional<E> parseLine(String line);
 
     public final ParsedList<E> parseUrl(String url) {
         try {
@@ -49,7 +47,7 @@ public abstract class BlocklistParser<E> {
         }
     }
 
-    protected final ParsedList<E> parseStream(Stream<String> stream) {
+    public final ParsedList<E> parseStream(Stream<String> stream) {
         var streamDigest = messageDigest();
         var parsedDigest = messageDigest();
         var items = stream

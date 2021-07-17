@@ -14,11 +14,11 @@ import java.util.Optional;
 
 public final class Domain implements Comparable<Domain> {
 
-    private final String domain;
+    private final String name;
     private static final Logger LOGGER = LoggerFactory.getLogger(Domain.class);
 
-    private Domain(String domain) {
-        this.domain = normalize(domain);
+    private Domain(String name) {
+        this.name = normalize(name);
     }
 
     public static Optional<Domain> fromUrl(final String url) {
@@ -40,12 +40,12 @@ public final class Domain implements Comparable<Domain> {
     }
 
     public boolean isValid() {
-        return !domain.isEmpty();
+        return !name.isEmpty();
     }
 
     @Override
     public String toString() {
-        return domain;
+        return name;
     }
 
     private static String normalize(final String domain) {
@@ -73,7 +73,7 @@ public final class Domain implements Comparable<Domain> {
 
     private ArrayList<String> domainParts()
     {
-        var domainParts = Arrays.asList(domain.split("\\.", -1));
+        var domainParts = Arrays.asList(name.split("\\.", -1));
         Collections.reverse(domainParts);
         return new ArrayList<>(domainParts);
     }
@@ -87,12 +87,12 @@ public final class Domain implements Comparable<Domain> {
             return false;
         }
         Domain otherDomain = (Domain) other;
-        return domain.equals(otherDomain.domain);
+        return name.equals(otherDomain.name);
     }
 
     @Override
     public int hashCode() {
-        return domain.hashCode();
+        return name.hashCode();
     }
 
     @Override

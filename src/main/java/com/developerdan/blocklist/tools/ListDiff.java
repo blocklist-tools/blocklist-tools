@@ -4,7 +4,7 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 
 public class ListDiff {
-    public static String DomainList(final NavigableSet<Domain> before, final NavigableSet<Domain> after) {
+    public static String domainList(final NavigableSet<Domain> before, final NavigableSet<Domain> after) {
         var patchBuilder = new PatchBuilder();
 
         TreeSet<Domain> allDomains = new TreeSet<>(before);
