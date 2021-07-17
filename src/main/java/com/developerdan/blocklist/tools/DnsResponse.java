@@ -5,10 +5,10 @@ import org.xbill.DNS.Rcode;
 import org.xbill.DNS.Type;
 
 public class DnsResponse {
-    private String rcode;
-    private String response;
-    private String queryType;
-    private String queryName;
+    private final String rcode;
+    private final String response;
+    private final String queryType;
+    private final String queryName;
 
     public static DnsResponse fromMessage(Message message) {
         var rCodeValue = Rcode.string(message.getRcode());
