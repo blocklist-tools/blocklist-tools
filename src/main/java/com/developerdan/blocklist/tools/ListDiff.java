@@ -4,6 +4,9 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 
 public class ListDiff {
+
+    private ListDiff() { }
+
     public static String domainList(final NavigableSet<Domain> before, final NavigableSet<Domain> after) {
         var patchBuilder = new PatchBuilder();
 

@@ -18,6 +18,8 @@ public class DnsQuery {
 
     private static Resolver resolver;
 
+    private DnsQuery() { }
+
     public static void resolvers(final String[] serverAddresses) {
         var newResolvers = new ArrayList<Resolver>();
         for (String address: serverAddresses) {

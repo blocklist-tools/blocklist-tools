@@ -54,7 +54,7 @@ public final class Domain implements Comparable<Domain> {
             || domain.startsWith("-")
             || domain.endsWith("-")
             || domain.endsWith(".")
-            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#<>].*")
+            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#`<>\\?=&@\\\\\\^\\]\\[{}:\\$\\|/\\+;].*")
             || domain.matches(".*\\.\\d+$")
             || domain.matches(".*[\\s]+.*")
         ) {

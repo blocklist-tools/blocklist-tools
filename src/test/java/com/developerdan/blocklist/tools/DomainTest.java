@@ -3,335 +3,294 @@ package com.developerdan.blocklist.tools;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DomainTest {
+class DomainTest {
 
     @Test
-    public void canCreateSimpleDomain() {
-        var domain = Domain.fromString("example.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("example.com");
+    void canCreateSimpleDomain() {
+        assertValidDomain("example.com", "example.com");
     }
 
     @Test
-    public void canCreateSubDomain() {
-        var domain = Domain.fromString("www.example.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("www.example.com");
+    void canCreateSubDomain() {
+        assertValidDomain("www.example.com", "www.example.com");
     }
 
     @Test
-    public void canParseUnicode() {
-        var domain = Domain.fromString("www.с킰.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("www.xn--q1a4875h.com");
+    void canParseUnicode() {
+        assertValidDomain("www.с킰.com", "www.xn--q1a4875h.com");
     }
 
     @Test
-    public void canParsePunyCode() {
-        var domain = Domain.fromString("www.xn--q1a4875h.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("www.xn--q1a4875h.com");
+    void canParseEmoji() {
+        assertValidDomain("☺.com", "xn--74h.com");
     }
 
     @Test
-    public void canParseDomainWithUnderscore() {
-        var domain = Domain.fromString("whatcounts_saas.s3.amazonaws.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("whatcounts_saas.s3.amazonaws.com");
+    void canParsePunyCode() {
+        assertValidDomain("www.xn--q1a4875h.com", "www.xn--q1a4875h.com");
     }
 
     @Test
-    public void cannotParseEmptyString() {
-        var domain = Domain.fromString("");
-        assertThat(domain).isEmpty();
+    void canParseDomainWithUnderscore() {
+        assertValidDomain("whatcounts_saas.s3.amazonaws.com", "whatcounts_saas.s3.amazonaws.com");
     }
 
     @Test
-    public void cannotParseNull() {
-        var domain = Domain.fromString(null);
-        assertThat(domain).isEmpty();
+    void cannotParseEmptyString() {
+        assertInvalidDomain("");
     }
 
     @Test
-    public void cannotParseHostsLine() {
-        var domain = Domain.fromString("0.0.0.0 example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseNull() {
+        assertInvalidDomain(null);
     }
 
     @Test
-    public void cannotParseDomainWithComments() {
-        var domain = Domain.fromString("example.com # my comment");
-        assertThat(domain).isEmpty();
+    void cannotParseHostsLine() {
+        assertInvalidDomain("0.0.0.0 example.com");
     }
 
     @Test
-    public void cannotParseLeadingHash() {
-        var domain = Domain.fromString("#example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseDomainWithComments() {
+        assertInvalidDomain("example.com # my comment");
     }
 
     @Test
-    public void cannotParseCommentedOutDomain() {
-        var domain = Domain.fromString("# example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseLeadingHash() {
+        assertInvalidDomain("#example.com");
     }
 
     @Test
-    public void cannotParseWildcard() {
-        var domain = Domain.fromString("*.example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseCommentedOutDomain() {
+        assertInvalidDomain("# example.com");
     }
 
     @Test
-    public void cannotParsePercent() {
-        var domain = Domain.fromString("%.example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseWildcard() {
+        assertInvalidDomain("*.example.com");
     }
 
     @Test
-    public void cannotParseDoubleQuote() {
-        var domain = Domain.fromString("\"example.com");
-        assertThat(domain).isEmpty();
+    void cannotParsePercent() {
+        assertInvalidDomain("%.example.com");
     }
 
     @Test
-    public void cannotParseSingleQuote() {
-        var domain = Domain.fromString("'example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseDoubleQuote() {
+        assertInvalidDomain("\"example.com");
     }
 
     @Test
-    public void cannotParseLeftParen() {
-        var domain = Domain.fromString("(example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseSingleQuote() {
+        assertInvalidDomain("'example.com");
     }
 
     @Test
-    public void cannotParseRightParen() {
-        var domain = Domain.fromString(")example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseLeftParen() {
+        assertInvalidDomain("(example.com");
     }
 
     @Test
-    public void cannotParseTrailingDot() {
-        var domain = Domain.fromString("example.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseRightParen() {
+        assertInvalidDomain(")example.com");
     }
 
     @Test
-    public void cannotParseExclamation() {
-        var domain = Domain.fromString("exam!ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseTrailingDot() {
+        assertInvalidDomain("example.com.");
     }
 
     @Test
-    public void cannotParseQuestionMark() {
-        var domain = Domain.fromString("exam?ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseExclamation() {
+        assertInvalidDomain("exam!ple.com");
     }
 
     @Test
-    public void cannotParseOpenAngle() {
-        var domain = Domain.fromString("exam<ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseQuestionMark() {
+        assertInvalidDomain("exam?ple.com");
     }
 
     @Test
-    public void cannotParseHtml() {
-        var domain = Domain.fromString("<html><head>");
-        assertThat(domain).isEmpty();
+    void cannotParseLeadingQuestionMark() {
+        assertInvalidDomain("?.example.com");
     }
 
     @Test
-    public void cannotParseCloseAngle() {
-        var domain = Domain.fromString("exam>ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseOpenAngle() {
+        assertInvalidDomain("exam<ple.com");
     }
 
     @Test
-    public void cannotParseColon() {
-        var domain = Domain.fromString("exam:ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseHtml() {
+        assertInvalidDomain("<html><head>");
     }
 
     @Test
-    public void cannotParseSimiColon() {
-        var domain = Domain.fromString("exam;ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseCloseAngle() {
+        assertInvalidDomain("exam>ple.com");
     }
 
     @Test
-    public void cannotParseOpenBracket() {
-        var domain = Domain.fromString("exam[ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseColon() {
+        assertInvalidDomain("exam:ple.com");
     }
 
     @Test
-    public void cannotParseCloseBracket() {
-        var domain = Domain.fromString("exam]ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseSimiColon() {
+        assertInvalidDomain("exam;ple.com");
     }
 
     @Test
-    public void cannotParsePlus() {
-        var domain = Domain.fromString("exam+ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseOpenBracket() {
+        assertInvalidDomain("exam[ple.com");
     }
 
     @Test
-    public void cannotParseEquals() {
-        var domain = Domain.fromString("exam=ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseCloseBracket() {
+        assertInvalidDomain("exam]ple.com");
     }
 
     @Test
-    public void cannotParseAmpersand() {
-        var domain = Domain.fromString("exa&ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParsePlus() {
+        assertInvalidDomain("exam+ple.com");
     }
 
     @Test
-    public void cannotParseCarrot() {
-        var domain = Domain.fromString("exa^ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseEquals() {
+        assertInvalidDomain("exam=ple.com");
     }
 
     @Test
-    public void cannotParseDollar() {
-        var domain = Domain.fromString("exa$ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseAmpersand() {
+        assertInvalidDomain("exa&ple.com");
     }
 
     @Test
-    public void cannotParseAt() {
-        var domain = Domain.fromString("exa@ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseCarrot() {
+        assertInvalidDomain("exa^ple.com");
     }
 
     @Test
-    public void cannotParseTildi() {
-        var domain = Domain.fromString("exa~ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseDollar() {
+        assertInvalidDomain("exa$ple.com");
     }
 
     @Test
-    public void cannotParseOpenCurly() {
-        var domain = Domain.fromString("exa{ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseAt() {
+        assertInvalidDomain("exa@ple.com");
     }
 
     @Test
-    public void cannotParseCloseCurly() {
-        var domain = Domain.fromString("exa}ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseTildi() {
+        assertInvalidDomain("exa~ple.com");
     }
 
     @Test
-    public void cannotParsePipe() {
-        var domain = Domain.fromString("exa|ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseOpenCurly() {
+        assertInvalidDomain("exa{ple.com");
     }
 
     @Test
-    public void cannotParseForwardSlash() {
-        var domain = Domain.fromString("exa/ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParseCloseCurly() {
+        assertInvalidDomain("exa}ple.com");
     }
 
     @Test
-    public void cannotParseBackSlash() {
-        var domain = Domain.fromString("exa\\ple.com.");
-        assertThat(domain).isEmpty();
+    void cannotParsePipe() {
+        assertInvalidDomain("exa|ple.com");
     }
 
     @Test
-    public void cannotParseLeadingDash() {
-        var domain = Domain.fromString("-example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseForwardSlash() {
+        assertInvalidDomain("exa/ple.com");
     }
 
     @Test
-    public void cannotParseLeadingPeriod() {
-        var domain = Domain.fromString(".example.com");
-        assertThat(domain).isEmpty();
+    void cannotParseBackSlash() {
+        assertInvalidDomain("exa\\ple.com");
     }
 
     @Test
-    public void cannotParseTrailingDash() {
-        var domain = Domain.fromString("example.com-");
-        assertThat(domain).isEmpty();
+    void cannotParseLeadingDash() {
+        assertInvalidDomain("-example.com");
     }
 
     @Test
-    public void cannotParseIpAddress() {
-        var domain = Domain.fromString("8.8.8.8");
-        assertThat(domain).isEmpty();
+    void cannotParseLeadingPeriod() {
+        assertInvalidDomain(".example.com");
     }
 
     @Test
-    public void cannotParseNumericOnlyTLD() {
-        var domain = Domain.fromString("example.com.123");
-        assertThat(domain).isEmpty();
+    void cannotParseTrailingDash() {
+        assertInvalidDomain("example.com-");
     }
 
     @Test
-    public void canParsePartialNumericTLD() {
+    void cannotParseIpAddress() {
+        assertInvalidDomain("8.8.8.8");
+    }
+
+    @Test
+    void cannotParseNumericOnlyTLD() {
+        assertInvalidDomain("example.com.123");
+    }
+
+    @Test
+    void cannotParseMiddleSpace() {
+        assertInvalidDomain("exa mple.com");
+    }
+
+    @Test
+    void cannotParseLeadingSpace() {
+        assertInvalidDomain(" example.com");
+    }
+
+    @Test
+    void cannotParseTrailingSpace() {
+        assertInvalidDomain("example.com ");
+    }
+
+    @Test
+    void cannotParseMiddleTab() {
+        assertInvalidDomain("exa\\tmple.com ");
+    }
+
+    @Test
+    void cannotParseLeadingTab() {
+        assertInvalidDomain("\texample.com ");
+    }
+
+    @Test
+    void cannotParseTrailingTab() {
+        assertInvalidDomain("example.com\t");
+    }
+
+    @Test
+    void cannotParseNewLine() {
+        assertInvalidDomain("examp\nle.com");
+    }
+
+    @Test
+    void cannotParseBackTick() {
+        assertInvalidDomain("examp`le.com");
+    }
+
+    @Test
+    void canParsePartialNumericTLD() {
         var domain = Domain.fromString("example.com.my123");
         assertThat(domain).isNotEmpty();
         assertThat(domain.get()).hasToString("example.com.my123");
     }
 
     @Test
-    public void cannotParseMiddleSpace() {
-        var domain = Domain.fromString("exa mple.com");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void cannotParseLeadingSpace() {
-        var domain = Domain.fromString(" example.com");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void cannotParseTrailingSpace() {
-        var domain = Domain.fromString("example.com ");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void cannotParseMiddleTab() {
-        var domain = Domain.fromString("exa\\tmple.com ");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void cannotParseLeadingTab() {
-        var domain = Domain.fromString("\texample.com ");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void cannotParseTrailingTab() {
-        var domain = Domain.fromString("example.com\t");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void cannotParseNewLine() {
-        var domain = Domain.fromString("examp\nle.com");
-        assertThat(domain).isEmpty();
-    }
-
-    @Test
-    public void canParseMiddleDash() {
+    void canParseMiddleDash() {
         var domain = Domain.fromString("my-example.com");
         assertThat(domain).isNotEmpty();
         assertThat(domain.get()).hasToString("my-example.com");
     }
 
     @Test
-    public void cannotParseDomainsTooLong() {
+    void cannotParseDomainsTooLong() {
         var longDomain = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa."
                        + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa."
                        + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa."
@@ -343,33 +302,32 @@ public class DomainTest {
     }
 
     @Test
-    public void canCompareEqualDomains() {
+    void canCompareEqualDomains() {
         var one = Domain.fromString("equals.example.com");
         var two = Domain.fromString("equals.example.com");
         assertThat(one).isNotEmpty();
         assertThat(two).isNotEmpty();
-        assertThat(one.get()).isEqualTo(two.get());
+        assertThat(one).isEqualTo(two);
         assertThat(one.get()).isEqualByComparingTo(two.get());
     }
 
     @Test
-    public void canEqualSelf() {
+    void canEqualSelf() {
         var one = Domain.fromString("equals.example.com");
-        assertThat(one).isNotEmpty();
-        assertThat(one.get()).isEqualTo(one.get());
+        assertThat(one).isNotEmpty().isEqualTo(one);
         assertThat(one.get()).isEqualByComparingTo(one.get());
     }
 
     @Test
-    public void canCompareNull() {
+    void canCompareNull() {
         var one = Domain.fromString("example.com");
         assertThat(one).isNotEmpty();
-        assertThat(one.get()).isNotEqualTo(null);
+        assertThat(one.get()).isNotNull();
         assertThat(one.get()).isNotEqualByComparingTo(null);
     }
 
     @Test
-    public void canCompareDifferentDomains() {
+    void canCompareDifferentDomains() {
         var one = Domain.fromString("one.example.com");
         var two = Domain.fromString("two.example.com");
         assertThat(one).isNotEmpty();
@@ -381,7 +339,7 @@ public class DomainTest {
     }
 
     @Test
-    public void canCompareByDomainSections() {
+    void canCompareByDomainSections() {
         var one = Domain.fromString("same.example.com");
         var two = Domain.fromString("same.example.edu");
         assertThat(one).isNotEmpty();
@@ -391,7 +349,7 @@ public class DomainTest {
     }
 
     @Test
-    public void canCompareByDomainSectionsWithDifferentLengths() {
+    void canCompareByDomainSectionsWithDifferentLengths() {
         var one = Domain.fromString("same.example.com");
         var two = Domain.fromString("another.same.example.com");
         assertThat(one).isNotEmpty();
@@ -401,57 +359,60 @@ public class DomainTest {
     }
 
     @Test
-    public void canGetDomainFromFromHttpUrl() {
-        var domain = Domain.fromUrl("http://example.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("example.com");
+    void canGetDomainFromFromHttpUrl() {
+        assertDomainFromUrl("http://example.com", "example.com");
     }
 
     @Test
-    public void canGetDomainFromFromHttpsUrl() {
-        var domain = Domain.fromUrl("https://example.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("example.com");
+    void canGetDomainFromFromHttpsUrl() {
+        assertDomainFromUrl("https://example.com", "example.com");
     }
 
     @Test
-    public void canGetDomainFromFromWwwUrl() {
-        var domain = Domain.fromUrl("https://www.example.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("www.example.com");
+    void canGetDomainFromFromWwwUrl() {
+        assertDomainFromUrl("https://www.example.com", "www.example.com");
     }
 
     @Test
-    public void canGetDomainFromFromFtp() {
-        var domain = Domain.fromUrl("ftp://example.com");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("example.com");
+    void canGetDomainFromFromFtp() {
+        assertDomainFromUrl("ftp://example.com", "example.com");
     }
 
     @Test
-    public void canGetDomainFromFromLocal() {
-        var domain = Domain.fromUrl("http://localhost/test");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("localhost");
+    void canGetDomainFromFromLocal() {
+        assertDomainFromUrl("http://localhost/test", "localhost");
     }
 
     @Test
-    public void canGetDomainFromFromLocalWithPort() {
-        var domain = Domain.fromUrl("http://localhost:8080/test");
-        assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("localhost");
+    void canGetDomainFromFromLocalWithPort() {
+        assertDomainFromUrl("http://localhost:8080/test", "localhost");
     }
 
     @Test
-    public void cannotGetDomainFromDomain() {
+    void canGetWithUrlParams() {
+        assertDomainFromUrl("http://example.co.uk?foo=bar&test=true", "example.co.uk");
+    }
+
+    @Test
+    void cannotGetDomainFromDomain() {
         var domain = Domain.fromUrl("example.com");
         assertThat(domain).isEmpty();
     }
 
-    @Test
-    public void canGetWithUrlParams() {
-        var domain = Domain.fromUrl("http://example.co.uk?foo=bar&test=true");
+    private void assertDomainFromUrl(String url, String expected) {
+        var domain = Domain.fromUrl(url);
         assertThat(domain).isNotEmpty();
-        assertThat(domain.get()).hasToString("example.co.uk");
+        assertThat(domain.get()).hasToString(expected);
+    }
+
+    private void assertInvalidDomain(String domainName) {
+        var domain = Domain.fromString(domainName);
+        assertThat(domain).isEmpty();
+    }
+
+    private void assertValidDomain(String domainName, String expected) {
+        var domain = Domain.fromString(domainName);
+        assertThat(domain).isNotEmpty();
+        assertThat(domain.get()).hasToString(expected);
     }
 }

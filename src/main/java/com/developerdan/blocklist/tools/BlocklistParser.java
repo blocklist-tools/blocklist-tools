@@ -51,13 +51,13 @@ public abstract class BlocklistParser<E> {
         var streamDigest = messageDigest();
         var parsedDigest = messageDigest();
         var items = stream
-                .peek((line) -> streamDigest.update(line.getBytes(StandardCharsets.UTF_8)))
+                .peek(line -> streamDigest.update(line.getBytes(StandardCharsets.UTF_8)))
                 .map(this::parseLine)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .peek((parsed) -> parsedDigest.update(parsed.toString().getBytes(StandardCharsets.UTF_8)))
+                .peek(parsed -> parsedDigest.update(parsed.toString().getBytes(StandardCharsets.UTF_8)))
                 .collect(Collectors.toCollection(TreeSet::new));
-        return new ParsedList<E>(items, byteArrayToHex(parsedDigest.digest()), byteArrayToHex(streamDigest.digest()));
+        return new ParsedList<>(items, byteArrayToHex(parsedDigest.digest()), byteArrayToHex(streamDigest.digest()));
     }
 
     private static MessageDigest messageDigest() {
