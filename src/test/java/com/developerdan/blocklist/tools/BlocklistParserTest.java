@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class BlocklistParserTest {
+class BlocklistParserTest {
     @Test
     public void canParseHostsFile()
     {
@@ -38,7 +38,7 @@ public class BlocklistParserTest {
     }
 
     @Test
-    public void canParseDomainListFile()
+    void canParseDomainListFile()
     {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         var filePath = classloader.getResource("domain-blocklist.txt").getPath();
@@ -64,14 +64,14 @@ public class BlocklistParserTest {
     }
 
     @Test
-    public void willThrowOnMissingFile()
+    void willThrowOnMissingFile()
     {
         assertThatExceptionOfType(UncheckedIOException.class)
             .isThrownBy(() -> new DomainListParser().parseFile("/not-a-real-file.txt"));
     }
 
     @Test
-    public void willSortUnsortedLists()
+    void willSortUnsortedLists()
     {
         String[] unsorted = {
             "c.example.com",
@@ -94,7 +94,7 @@ public class BlocklistParserTest {
     }
 
     @Test
-    public void canDownloadAndParseList()
+    void canDownloadAndParseList()
     {
         var url = "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt";
         var domains = new HostsParser().parseUrl(url).getRecords()

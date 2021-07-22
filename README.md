@@ -1,5 +1,7 @@
 # Blocklist Tools
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=blocklist-tools_blocklist-tools&metric=coverage)](https://sonarcloud.io/dashboard?id=blocklist-tools_blocklist-tools)
+
 Java library for working with blocklists.
 
 * Parse hosts and domain formatted blocklists. Hopefully support for more formats in the future (PRs welcome!)
