@@ -78,14 +78,14 @@ public abstract class BlocklistParser<E> {
     private HttpClient httpClient() {
         return HttpClient.newBuilder()
             .followRedirects(HttpClient.Redirect.NORMAL)
-            .connectTimeout(Duration.ofSeconds(480))
+            .connectTimeout(Duration.ofMinutes(8))
             .build();
     }
 
     private HttpRequest httpRequest(String url) {
         return HttpRequest
             .newBuilder()
-            .timeout(Duration.ofSeconds(480))
+            .timeout(Duration.ofMinutes(8))
             .version(HttpClient.Version.HTTP_2)
             .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0")
             .header("Accept", "text/html,text/plain")
