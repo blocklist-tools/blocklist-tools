@@ -49,22 +49,19 @@ public final class Domain implements Comparable<Domain> {
     }
 
     private static String normalize(final String domain) {
-        if (domain == null
-            || domain.length() > 255
-            || domain.startsWith("-")
-            || domain.endsWith("-")
-            || domain.endsWith(".")
-            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#`<>\\?=&@\\\\\\^\\]\\[{}:\\$\\|/\\+;].*")
-            || domain.matches(".*\\.\\d+$")
-            || domain.matches(".*[\\s]+.*")
-        ) {
+        if (invalidDomain(domain)) {
             LOGGER.info("Domain <{}> is not valid", domain);
             return "";
         }
         try {
             var normalized = IDN.toASCII(domain);
             normalized = IDN.toASCII(normalized);
-            return normalized.toLowerCase(Locale.ENGLISH);
+            normalized = normalized.toLowerCase(Locale.ENGLISH);
+            if (invalidDomain(normalized)) {
+                LOGGER.info("Domain <{}> is not valid", domain);
+                return "";
+            }
+            return normalized;
         } catch (IllegalArgumentException ex) {
             LOGGER.info("Domain <{}> is not valid: {}", domain, ex.getMessage());
             return "";
@@ -120,5 +117,16 @@ public final class Domain implements Comparable<Domain> {
         // we know that the domains are not equal, and we've already looped
         // through all our sections, so 'other' must be longer
         return -1;
+    }
+
+    private static boolean invalidDomain(final String domain) {
+        return domain == null
+            || domain.length() > 255
+            || domain.startsWith("-")
+            || domain.endsWith("-")
+            || domain.endsWith(".")
+            || domain.matches(".*[~!%\\*\\(\\)\"\\s'#`<>\\?=&@\\\\\\^\\]\\[{}:\\$\\|/\\+;].*")
+            || domain.matches(".*\\.\\d+$")
+            || domain.matches(".*[\\s]+.*");
     }
 }
