@@ -98,6 +98,10 @@ class DomainTest {
     @Test
     void cannotParseTrailingDot() {
         assertInvalidDomain("example.com.");
+        assertInvalidDomain("alisat.biz.");
+        assertInvalidDomain("alisat.biz。");
+        assertInvalidDomain("dsp.simba.taobao.com.");
+        assertInvalidDomain("dsp.simba.taobao.com。");
     }
 
     @Test

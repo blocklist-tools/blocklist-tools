@@ -30,7 +30,8 @@ public abstract class BlocklistParser<E> {
     public final ParsedList<E> parseUrl(String url) {
         try {
             LOGGER.info("Downloading blocklist from {}", url);
-            var response = httpClient().send(httpRequest(url), HttpResponse.BodyHandlers.ofLines());
+            var response = httpClient()
+                .send(httpRequest(url), HttpResponse.BodyHandlers.ofLines());
             return parseStream(response.body());
         } catch (Throwable ex) {
             LOGGER.error("Unable to download blocklist {}", url);
