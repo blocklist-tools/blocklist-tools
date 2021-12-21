@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.developerdan</groupId>
     <artifactId>blocklist-tools</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <name>Blocklist Tools</name>
     <description>Blocklist Tools</description>
     <url>https://github.com/blocklist-tools/blocklist-tools</url>
@@ -17,12 +17,12 @@
     </licenses>
 
     <properties>
-        <java.version>14</java.version>
-        <dnsjava.version>3.4.1</dnsjava.version>
-        <slf4j.version>1.7.30</slf4j.version>
-        <junit.version>5.7.2</junit.version>
-        <assertj.version>3.20.2</assertj.version>
-        <errorprone.version>2.9.0</errorprone.version>
+        <java.version>17</java.version>
+        <dnsjava.version>3.4.3</dnsjava.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <junit.version>5.8.2</junit.version>
+        <assertj.version>3.21.0</assertj.version>
+        <errorprone.version>2.10.0</errorprone.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.9</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -119,7 +119,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -244,17 +244,25 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <optimize>true</optimize>
                     <debug>true</debug>
+                    <verbose>true</verbose>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
-                    <fork>true</fork>
-                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     <debuglevel>lines,vars,source</debuglevel>
+                    <fork>true</fork>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>-Xplugin:ErrorProne</arg>
-                        <arg>-Xlint:unchecked</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
