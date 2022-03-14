@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.developerdan</groupId>
     <artifactId>blocklist-tools</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <name>Blocklist Tools</name>
     <description>Blocklist Tools</description>
     <url>https://github.com/blocklist-tools/blocklist-tools</url>
@@ -124,7 +124,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>3.3.2</version>
+                    <version>3.0.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
