@@ -15,7 +15,7 @@ class DnsQueryTest {
 
     @BeforeEach
     @SuppressWarnings("UnusedMethod")
-    private void setDefaultResolver() {
+    public void setDefaultResolver() {
         DnsQuery.resolvers(new String[]{});
     }
 
