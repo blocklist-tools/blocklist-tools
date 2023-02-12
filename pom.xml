@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.developerdan</groupId>
     <artifactId>blocklist-tools</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <name>Blocklist Tools</name>
     <description>Blocklist Tools</description>
     <url>https://github.com/blocklist-tools/blocklist-tools</url>
@@ -18,11 +18,11 @@
 
     <properties>
         <java.version>17</java.version>
-        <dnsjava.version>3.5.1</dnsjava.version>
-        <slf4j.version>2.0.3</slf4j.version>
-        <junit.version>5.9.1</junit.version>
-        <assertj.version>3.23.1</assertj.version>
-        <errorprone.version>2.16</errorprone.version>
+        <dnsjava.version>3.5.2</dnsjava.version>
+        <slf4j.version>2.0.6</slf4j.version>
+        <junit.version>5.9.2</junit.version>
+        <assertj.version>3.24.2</assertj.version>
+        <errorprone.version>2.18.0</errorprone.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.11</version>
+            <version>1.4.5</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -104,12 +104,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0-M6</version>
+                    <version>3.0.0-M7</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.12.1</version>
+                    <version>4.0.0-M4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
@@ -139,7 +139,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M7</version>
+                    <version>3.0.0-M8</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -149,7 +149,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>3.4.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -169,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>4.0.0-M3</version>
+                <version>4.0.0-M4</version>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
