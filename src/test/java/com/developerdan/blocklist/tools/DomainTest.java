@@ -326,7 +326,6 @@ class DomainTest {
     void canCompareNull() {
         var one = Domain.fromString("example.com");
         assertThat(one).isNotEmpty();
-        assertThat(one.get()).isNotNull();
         assertThat(one.get()).isNotEqualByComparingTo(null);
     }
 
